@@ -18,7 +18,7 @@ int main()
     for(int i=0; i < n; i++)
     {
         for(int j=0; j < n; j++)
-            {
+        {
             float value;
             std::cin >> value;
             kernel.at<float>(i,j) = value;
