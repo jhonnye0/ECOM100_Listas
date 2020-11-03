@@ -6,6 +6,7 @@
 #include <wx/menu.h>
 #include <wx/filedlg.h>
 #include <wx/stdpaths.h>
+#include "wxCvResizeDialog.h"
 
 
 namespace wxcv {
@@ -115,7 +116,14 @@ namespace wxcv {
      * Show a wxCvResizeDialog and resize @image to the desired size
      */
     void MainWindow::ResizeImage(wxCommandEvent& event) {
+        wxCvResizeDialog resizeDialog(this);
 
+        if(resizeDialog.ShowModal() == wxID_CANCEL){
+            return;
+        }
+
+        resizeDialog.Apply(image);
+        std::cout << image.size() << std::endl;
     }
 
     void MainWindow::Filter2D(wxCommandEvent& event) {
