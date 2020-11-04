@@ -9,6 +9,8 @@
 #include <wx/app.h>
 #include <wx/frame.h>
 
+#include "wxCvImagePanel.h"
+
 
 namespace wxcv {
 
@@ -19,6 +21,7 @@ namespace wxcv {
 
     class MainWindow : public wxFrame {
         cv::Mat image;
+        wxCvImagePanel* imagePanel;
     public:
         /*
          * Widgets id's

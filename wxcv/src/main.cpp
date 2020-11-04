@@ -6,6 +6,7 @@
 #include <wx/menu.h>
 #include <wx/filedlg.h>
 #include <wx/stdpaths.h>
+#include <wx/sizer.h>
 #include "wxCvResizeDialog.h"
 
 
@@ -21,6 +22,13 @@ namespace wxcv {
 
     MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "wxCV") {
         InitMenu();
+
+        imagePanel = new wxCvImagePanel(this);
+
+        wxBoxSizer* box = new wxBoxSizer(wxVERTICAL);
+        box->Add(imagePanel, 1, wxEXPAND | wxALL, 5);
+        SetSizer(box);
+
         BindEvents();
         Center();
     }
