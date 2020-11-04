@@ -19,6 +19,7 @@ namespace wxcv {
     wxCvResizeDialog::wxCvResizeDialog(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Redimensionar imagem"),
                                                                     wxDefaultPosition, wxDefaultSize,
                                                                     wxDEFAULT_DIALOG_STYLE) {
+
         interpolation = new wxChoice(this, ID_INTERPOLATION);
         for (auto& choice : INTERPOLATION_CHOICES) {
             interpolation->Append(choice);
@@ -44,11 +45,14 @@ namespace wxcv {
         flexGrid->Add(x, 1, wxEXPAND);
         flexGrid->Add(new wxStaticText(this, wxID_ANY, wxT("y")));
         flexGrid->Add(y, 1, wxEXPAND);
-        flexGrid->AddStretchSpacer();
-        flexGrid->Add(new wxButton(this, wxID_OK), 1);
+
+
+        //flexGrid->Add(new wxButton(this, wxID_CANCEL, "Cancelar"));
+        //flexGrid->Add(new wxButton(this, wxID_OK, "Ok"));
 
         wxBoxSizer* box = new wxBoxSizer(wxVERTICAL);
         box->Add(flexGrid, 1, wxEXPAND | wxALL, 5);
+        box->Add(wxDialog::CreateButtonSizer(wxOK | wxCANCEL), 0, wxALIGN_CENTER | wxBOTTOM, 5);
         SetSizer(box);
         Layout();
         Fit();

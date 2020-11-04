@@ -78,12 +78,12 @@ namespace wxcv {
     void MainWindow::OpenImage(wxCommandEvent& event) {
         wxFileDialog fileDialog(this, wxT("Abrir imagem"));
 
-        if(fileDialog.ShowModal() == wxID_CANCEL){
+        if (fileDialog.ShowModal() == wxID_CANCEL) {
             return;
         }
 
         image = cv::imread(fileDialog.GetPath().ToStdString());
-        if(!image.empty()){
+        if (!image.empty()) {
             SetStatusText(fileDialog.GetFilename() + wxT(" carregada com sucesso!"));
         }
     }
@@ -95,7 +95,7 @@ namespace wxcv {
     void MainWindow::SaveImage(wxCommandEvent& event) {
         wxFileDialog fileDialog(this, wxT("Salvar imagem"));
 
-        if(fileDialog.ShowModal() == wxID_CANCEL){
+        if (fileDialog.ShowModal() == wxID_CANCEL) {
             return;
         }
 
@@ -118,12 +118,10 @@ namespace wxcv {
     void MainWindow::ResizeImage(wxCommandEvent& event) {
         wxCvResizeDialog resizeDialog(this);
 
-        if(resizeDialog.ShowModal() == wxID_CANCEL){
-            return;
+        if (resizeDialog.ShowModal() == wxID_OK) {
+            resizeDialog.Apply(image);
+            std::cout << image.size() << std::endl;
         }
-
-        resizeDialog.Apply(image);
-        std::cout << image.size() << std::endl;
     }
 
     void MainWindow::Filter2D(wxCommandEvent& event) {
