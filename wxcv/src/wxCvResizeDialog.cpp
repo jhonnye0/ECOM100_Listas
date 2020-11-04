@@ -16,37 +16,43 @@ namespace wxcv {
                                                                 "WARP_FILL_OUTLIERS", "WARP_INVERSE_MAP"};
     const wxString wxCvResizeDialog::RESIZE_MODE_CHOICES[] = {"Absoluto", "Relativo"};
 
-    wxCvResizeDialog::wxCvResizeDialog(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Redimensionar imagem")) {
+    wxCvResizeDialog::wxCvResizeDialog(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Redimensionar imagem"),
+                                                                    wxDefaultPosition, wxDefaultSize,
+                                                                    wxDEFAULT_DIALOG_STYLE) {
         interpolation = new wxChoice(this, ID_INTERPOLATION);
         for (auto& choice : INTERPOLATION_CHOICES) {
             interpolation->Append(choice);
         }
-        interpolation->SetLabel(wxT("Interpolação"));
         interpolation->SetSelection(0);
 
         resizeMode = new wxChoice(this, ID_RESIZE_MODE);
         for (auto& choice : RESIZE_MODE_CHOICES) {
             resizeMode->Append(choice);
         }
-        resizeMode->SetLabel(wxT("Modo"));
         resizeMode->SetSelection(0);
 
         x = new wxTextCtrl(this, ID_X);
-        x->SetLabel(wxT("x"));
         y = new wxTextCtrl(this, ID_Y);
-        y->SetLabel(wxT("y"));
 
-        wxBoxSizer* vbox = new wxBoxSizer(wxVERTICAL);
-        for(wxWindow* control : {(wxWindow*) interpolation, (wxWindow*) resizeMode, (wxWindow*) x, (wxWindow*) y}){
-            wxBoxSizer* hbox = new wxBoxSizer(wxHORIZONTAL);
-            hbox->Add(new wxStaticText(this, wxID_ANY, control->GetLabel()), 1);
-            hbox->Add(control, 1);
-            vbox->Add(hbox);
-        }
-        vbox->Add(new wxButton(this, wxID_OK));
-        vbox->Layout();
+        wxFlexGridSizer* flexGrid = new wxFlexGridSizer(2, wxSize(5, 5));
 
-        SetSizer(vbox);
+        flexGrid->Add(new wxStaticText(this, wxID_ANY, wxT("Interpolação")));
+        flexGrid->Add(interpolation, 1, wxEXPAND);
+        flexGrid->Add(new wxStaticText(this, wxID_ANY, wxT("Modo")));
+        flexGrid->Add(resizeMode, 1, wxEXPAND);
+        flexGrid->Add(new wxStaticText(this, wxID_ANY, wxT("x")));
+        flexGrid->Add(x, 1, wxEXPAND);
+        flexGrid->Add(new wxStaticText(this, wxID_ANY, wxT("y")));
+        flexGrid->Add(y, 1, wxEXPAND);
+        flexGrid->AddStretchSpacer();
+        flexGrid->Add(new wxButton(this, wxID_OK), 1);
+
+        wxBoxSizer* box = new wxBoxSizer(wxVERTICAL);
+        box->Add(flexGrid, 1, wxEXPAND | wxALL, 5);
+        SetSizer(box);
+        Layout();
+        Fit();
+        Center();
     }
 
 
@@ -55,8 +61,6 @@ namespace wxcv {
      */
     bool wxCvResizeDialog::Apply(cv::Mat& image) {
         if (Validate()) {
-            std::cout << resizeMode->GetStringSelection() << std::endl;
-
             int interpolationIndex = cv::INTER_LINEAR + interpolation->GetSelection();
             if (resizeMode->GetStringSelection() == "Absoluto") {
                 long w, h;
