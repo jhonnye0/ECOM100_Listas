@@ -14,11 +14,15 @@ namespace wxcv {
                                                                 "INTER_AREA", "INTER_LANCZOS4", "INTER_LINEAR_EXACT",
                                                                 "INTER_NEAREST_EXACT", "INTER_MAX",
                                                                 "WARP_FILL_OUTLIERS", "WARP_INVERSE_MAP"};
-    const wxString wxCvResizeDialog::RESIZE_MODE_CHOICES[] = {"Absoluto", "Relativo"};
+    const wxString wxCvResizeDialog::RESIZE_UNIT_CHOICES[] = {"px", "%"};
 
-    wxCvResizeDialog::wxCvResizeDialog(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Redimensionar imagem"),
-                                                                    wxDefaultPosition, wxDefaultSize,
-                                                                    wxDEFAULT_DIALOG_STYLE) {
+    wxCvResizeDialog::wxCvResizeDialog(wxWindow* parent, const cv::Mat& image) : wxDialog(parent, wxID_ANY,
+                                                                                          wxT("Redimensionar imagem"),
+                                                                                          wxDefaultPosition,
+                                                                                          wxDefaultSize,
+                                                                                          wxDEFAULT_DIALOG_STYLE) {
+        imageWidth = image.size().width;
+        imageHeight = image.size().height;
 
         interpolation = new wxChoice(this, ID_INTERPOLATION);
         for (auto& choice : INTERPOLATION_CHOICES) {
@@ -26,37 +30,35 @@ namespace wxcv {
         }
         interpolation->SetSelection(0);
 
-        resizeMode = new wxChoice(this, ID_RESIZE_MODE);
-        for (auto& choice : RESIZE_MODE_CHOICES) {
-            resizeMode->Append(choice);
+        unit = new wxChoice(this, ID_UNIT);
+        for (auto& choice : RESIZE_UNIT_CHOICES) {
+            unit->Append(choice);
         }
-        resizeMode->SetSelection(0);
+        unit->SetSelection(Pixel);
 
-        x = new wxTextCtrl(this, ID_X);
-        y = new wxTextCtrl(this, ID_Y);
+        x = new wxTextCtrl(this, ID_X, std::to_string(image.size().width));
+        y = new wxTextCtrl(this, ID_Y, std::to_string(image.size().width));
 
         wxFlexGridSizer* flexGrid = new wxFlexGridSizer(2, wxSize(5, 5));
-
         flexGrid->Add(new wxStaticText(this, wxID_ANY, wxT("Interpolação")));
         flexGrid->Add(interpolation, 1, wxEXPAND);
-        flexGrid->Add(new wxStaticText(this, wxID_ANY, wxT("Modo")));
-        flexGrid->Add(resizeMode, 1, wxEXPAND);
+        flexGrid->Add(new wxStaticText(this, wxID_ANY, wxT("Unidade")));
+        flexGrid->Add(unit, 1, wxEXPAND);
         flexGrid->Add(new wxStaticText(this, wxID_ANY, wxT("x")));
         flexGrid->Add(x, 1, wxEXPAND);
         flexGrid->Add(new wxStaticText(this, wxID_ANY, wxT("y")));
         flexGrid->Add(y, 1, wxEXPAND);
 
-
-        //flexGrid->Add(new wxButton(this, wxID_CANCEL, "Cancelar"));
-        //flexGrid->Add(new wxButton(this, wxID_OK, "Ok"));
-
         wxBoxSizer* box = new wxBoxSizer(wxVERTICAL);
         box->Add(flexGrid, 1, wxEXPAND | wxALL, 5);
         box->Add(wxDialog::CreateButtonSizer(wxOK | wxCANCEL), 0, wxALIGN_CENTER | wxBOTTOM, 5);
+
         SetSizer(box);
         Layout();
         Fit();
         Center();
+
+        Bind(wxEVT_COMBOBOX, &wxCvResizeDialog::OnUnitChanged, this, ID_UNIT);
     }
 
 
@@ -66,13 +68,13 @@ namespace wxcv {
     bool wxCvResizeDialog::Apply(cv::Mat& image) {
         if (Validate()) {
             int interpolationIndex = cv::INTER_LINEAR + interpolation->GetSelection();
-            if (resizeMode->GetStringSelection() == "Absoluto") {
+            if (unit->GetSelection() == Pixel) {
                 long w, h;
                 x->GetValue().ToLong(&w);
                 y->GetValue().ToLong(&h);
                 cv::resize(image, image, cv::Size(w, h), 0.0, 0.0, interpolationIndex);
             }
-            else if (resizeMode->GetStringSelection() == "Relativo") {
+            else if (unit->GetSelection() == Percentage) {
                 double fx, fy;
                 x->GetValue().ToDouble(&fx);
                 y->GetValue().ToDouble(&fy);
@@ -88,5 +90,36 @@ namespace wxcv {
      */
     bool wxCvResizeDialog::Validate() {
         return true;
+    }
+
+
+    /*
+     * Convert the x and y values between px and % units when the unit combobox changes
+     */
+    void wxCvResizeDialog::OnUnitChanged(wxCommandEvent& event) {
+        std::cout << "AQUI" << std::endl;
+
+        switch (unit->GetSelection()) {
+            case Pixel: {
+                double sx, sy;
+                x->GetValue().ToDouble(&sx);
+                y->GetValue().ToDouble(&sy);
+                x->ChangeValue(std::to_string(sx * imageWidth));
+                y->ChangeValue(std::to_string(sy * imageHeight));
+
+                std::cout << sx * imageWidth << " " << sy * imageHeight;
+                break;
+            }
+            case Percentage: {
+                long w, h;
+                x->GetValue().ToLong(&w);
+                y->GetValue().ToLong(&h);
+                x->ChangeValue(std::to_string((float) w / imageWidth));
+                y->ChangeValue(std::to_string((float) h / imageHeight));
+
+                std::cout << (float) w / imageWidth << " " << (float) h / imageHeight;
+                break;
+            }
+        }
     }
 }

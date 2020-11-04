@@ -116,7 +116,7 @@ namespace wxcv {
      * Show a wxCvResizeDialog and resize @image to the desired size
      */
     void MainWindow::ResizeImage(wxCommandEvent& event) {
-        wxCvResizeDialog resizeDialog(this);
+        wxCvResizeDialog resizeDialog(this, image);
 
         if (resizeDialog.ShowModal() == wxID_OK) {
             resizeDialog.Apply(image);

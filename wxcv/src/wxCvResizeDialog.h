@@ -16,23 +16,30 @@ namespace wxcv {
     class wxCvResizeDialog : public wxDialog {
         enum {
             ID_INTERPOLATION,
-            ID_RESIZE_MODE,
+            ID_UNIT,
             ID_X,
             ID_Y,
         };
 
-        static const wxString INTERPOLATION_CHOICES[];
-        static const wxString RESIZE_MODE_CHOICES[];
+        enum Unit {
+            Pixel,
+            Percentage
+        };
 
+        static const wxString INTERPOLATION_CHOICES[];
+        static const wxString RESIZE_UNIT_CHOICES[];
+
+        int imageWidth;
+        int imageHeight;
         wxChoice* interpolation;
-        wxChoice* resizeMode;
+        wxChoice* unit;
         wxTextCtrl* x;
         wxTextCtrl* y;
     public:
         /*
          * Default constructor
          */
-        wxCvResizeDialog(wxWindow* parent);
+        wxCvResizeDialog(wxWindow* parent, const cv::Mat& image);
 
         /*
          * Resize @image
@@ -43,6 +50,11 @@ namespace wxcv {
          * Validate the input
          */
         bool Validate();
+
+        /*
+         * Convert the x and y values between px and % units
+         */
+        void OnUnitChanged(wxCommandEvent& event);
     };
 
 }
