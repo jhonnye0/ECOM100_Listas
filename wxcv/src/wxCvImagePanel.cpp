@@ -81,22 +81,18 @@ void wxCvImagePanel::paintNow()
  */
 void wxCvImagePanel::render(wxDC&  dc)
 {
-    if(!resized.Ok()){
-        return;
-    }
-
     int neww, newh;
     dc.GetSize( &neww, &newh );
 
-    if( neww != w || newh != h )
+    /*if( neww != w || newh != h )
     {
-        resized = wxBitmap( image.Scale( neww, newh /*, wxIMAGE_QUALITY_HIGH*/ ) );
+        resized = wxBitmap( image.Scale( neww, newh, wxIMAGE_QUALITY_HIGH) );
         w = neww;
         h = newh;
         dc.DrawBitmap( resized, 0, 0, false );
-    }else{
+    }else{*/
         dc.DrawBitmap( resized, 0, 0, false );
-    }
+    //}
 }
 
 /*
@@ -111,5 +107,6 @@ void wxCvImagePanel::OnSize(wxSizeEvent& event){
 
 void wxCvImagePanel::UpdateImage(cv::Mat& _image) {
     image = wxImage(_image.cols, _image.rows, _image.data, true);
+    resized = wxBitmap(image);
     Refresh();
 }

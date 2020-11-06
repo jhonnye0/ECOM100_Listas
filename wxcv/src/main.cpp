@@ -93,6 +93,8 @@ namespace wxcv {
         image = cv::imread(fileDialog.GetPath().ToStdString());
         if (!image.empty()) {
             SetStatusText(fileDialog.GetFilename() + wxT(" carregada com sucesso!"));
+            cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
+            imagePanel->UpdateImage(image);
         }
     }
 
@@ -101,12 +103,13 @@ namespace wxcv {
      * Prompt the user to save the image in disk using OpenCV
      */
     void MainWindow::SaveImage(wxCommandEvent& event) {
-        wxFileDialog fileDialog(this, wxT("Salvar imagem"));
+        wxFileDialog fileDialog(this, wxT("Salvar imagem"), "", "", "", wxFD_SAVE);
 
         if (fileDialog.ShowModal() == wxID_CANCEL) {
             return;
         }
 
+        std::cout << fileDialog.GetPath().ToStdString();
         cv::imwrite(fileDialog.GetPath().ToStdString(), image);
         SetStatusText(fileDialog.GetFilename() + wxT(" salvo com sucesso!"));
     }
@@ -129,6 +132,7 @@ namespace wxcv {
         if (resizeDialog.ShowModal() == wxID_OK) {
             resizeDialog.Apply(image);
             std::cout << image.size() << std::endl;
+            imagePanel->UpdateImage(image);
         }
     }
 
