@@ -5,7 +5,6 @@
 #include "wxCV.h"
 #include <wx/menu.h>
 #include <wx/filedlg.h>
-#include <wx/stdpaths.h>
 #include <wx/sizer.h>
 #include "wxCvResizeDialog.h"
 #include "wxCvFilter2dDialog.h"
