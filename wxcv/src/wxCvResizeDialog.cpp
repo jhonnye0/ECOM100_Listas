@@ -37,7 +37,7 @@ namespace wxcv {
         unit->SetSelection(Pixel);
 
         x = new wxTextCtrl(this, ID_X, std::to_string(image.size().width));
-        y = new wxTextCtrl(this, ID_Y, std::to_string(image.size().width));
+        y = new wxTextCtrl(this, ID_Y, std::to_string(image.size().height));
 
         wxFlexGridSizer* flexGrid = new wxFlexGridSizer(2, wxSize(5, 5));
         flexGrid->Add(new wxStaticText(this, wxID_ANY, wxT("Interpolação")));
@@ -58,7 +58,7 @@ namespace wxcv {
         Fit();
         Center();
 
-        Bind(wxEVT_COMBOBOX, &wxCvResizeDialog::OnUnitChanged, this, ID_UNIT);
+        Bind(wxEVT_CHOICE, &wxCvResizeDialog::OnUnitChanged, this, ID_UNIT);
     }
 
 
@@ -97,29 +97,32 @@ namespace wxcv {
      * Convert the x and y values between px and % units when the unit combobox changes
      */
     void wxCvResizeDialog::OnUnitChanged(wxCommandEvent& event) {
-        std::cout << "AQUI" << std::endl;
+        static int lastSelection = Pixel;
+
+        // Unchanged
+        if(unit->GetSelection() == lastSelection){
+            return;
+        }
 
         switch (unit->GetSelection()) {
             case Pixel: {
                 double sx, sy;
                 x->GetValue().ToDouble(&sx);
                 y->GetValue().ToDouble(&sy);
-                x->ChangeValue(std::to_string(sx * imageWidth));
-                y->ChangeValue(std::to_string(sy * imageHeight));
-
-                std::cout << sx * imageWidth << " " << sy * imageHeight;
+                x->ChangeValue(std::to_string((int) (sx / 100.0 * imageWidth)) + "px");
+                y->ChangeValue(std::to_string((int) (sy / 100.0 * imageHeight)) + "px");
                 break;
             }
             case Percentage: {
                 long w, h;
                 x->GetValue().ToLong(&w);
                 y->GetValue().ToLong(&h);
-                x->ChangeValue(std::to_string((float) w / imageWidth));
-                y->ChangeValue(std::to_string((float) h / imageHeight));
-
-                std::cout << (float) w / imageWidth << " " << (float) h / imageHeight;
+                x->ChangeValue(std::to_string(100.0 * w / imageWidth) + "%");
+                y->ChangeValue(std::to_string(100.0 * h / imageHeight) + "%");
                 break;
             }
         }
+
+        lastSelection = unit->GetSelection();
     }
 }
