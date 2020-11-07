@@ -8,6 +8,7 @@
 #include <wx/stdpaths.h>
 #include <wx/sizer.h>
 #include "wxCvResizeDialog.h"
+#include "wxCvFilter2dDialog.h"
 
 
 namespace wxcv {
@@ -109,8 +110,9 @@ namespace wxcv {
             return;
         }
 
-        std::cout << fileDialog.GetPath().ToStdString();
-        cv::imwrite(fileDialog.GetPath().ToStdString(), image);
+        cv::Mat result;
+        cv::cvtColor(image, result, cv::COLOR_RGB2BGR);
+        cv::imwrite(fileDialog.GetPath().ToStdString(), result);
         SetStatusText(fileDialog.GetFilename() + wxT(" salvo com sucesso!"));
     }
 
@@ -131,13 +133,19 @@ namespace wxcv {
 
         if (resizeDialog.ShowModal() == wxID_OK) {
             resizeDialog.Apply(image);
-            std::cout << image.size() << std::endl;
             imagePanel->UpdateImage(image);
         }
     }
 
     void MainWindow::Filter2D(wxCommandEvent& event) {
+        wxCvFilter2dDialog filterDialog(this, image);
 
+        if(filterDialog.ShowModal() == wxID_CANCEL){
+            return;
+        }
+
+        filterDialog.Apply(image);
+        imagePanel->UpdateImage(image);
     }
 
     void MainWindow::About(wxCommandEvent& event) {
