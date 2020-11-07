@@ -38,7 +38,7 @@ END_EVENT_TABLE()
  void wxImagePanel::keyReleased(wxKeyEvent& event) {}
  */
 
-wxCvImagePanel::wxCvImagePanel(wxFrame* parent) :
+wxCvImagePanel::wxCvImagePanel(wxWindow* parent) :
         wxPanel(parent)
 {
     // load the file... ideally add a check to see if loading was successful

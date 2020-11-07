@@ -18,7 +18,7 @@ class wxCvImagePanel : public wxPanel
     int w, h;
 
 public:
-    wxCvImagePanel(wxFrame* parent);
+    wxCvImagePanel(wxWindow* parent);
 
     void paintEvent(wxPaintEvent & evt);
     void paintNow();
