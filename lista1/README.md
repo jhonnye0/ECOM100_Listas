@@ -7,11 +7,15 @@
 ## 1ª lista de exercícios
 
 ### 1. Elabore e implemente um algoritmo para eliminar, a partir de duas imagens capturadas de um mesmo ponto de vista, o background (ou imagem de fundo). Aplique nas imagens abaixo.
-![Primeira imagem](primeira imagem) ![Segunda imagem](segunda imagem)
+
+<img src="imagens/first_frame.jpg" width="300px"/> <img src="imagens/second_frame.jpg" width="300px"/> 
 
 ### 2. Sugira, implemente e aplique filtros na imagem resultante da primeira questão com o objetivo de destacar apenas o objeto do foreground.
 
 ### 3. Implemente um aplicativo que receba o tamanho n de um filtro espacial com dimensões n x n, e a matriz com os pesos do filtro, e aplique o filtro numa imagem, gerando e salvando a imagem resultante no disco.
+No aplicativo desenvolvido não é necessário que o usuário digite as dimensões da matriz e também não é necessário que a matriz seja quadrada (caso o filtro não seja n x n é possível achar um filtro quadrado com o mesmo efeito completando-o com zeros). Basta ir até Ferramentas > Filtrar e digitar os pesos, onde as colunas devem ser separadas por espaços e as linhas por quebras de linha. Uma prévia do resultado é atualizada na parte inferior toda vez que a entrada da matriz seja válida. Também há a opção tons de cinza para converter a imagens para tons de cinza antes de aplicar o filtro. O processo é ilustrado a seguir:
+
+<img src="imagens/b03ifB4t6w.gif" width="400px"/>
 
 ### 4. Implemente dois tipos de filtro para remoção de ruídos e encontre exemplos onde cada um deles funciona melhor.
 
