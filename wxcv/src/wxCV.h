@@ -31,6 +31,7 @@ namespace wxcv {
             ID_SAVE_IMAGE,
             ID_RESIZE_IMAGE,
             ID_FILTER_2D,
+            ID_THRESHOLD,
         };
 
         /*
@@ -72,6 +73,11 @@ namespace wxcv {
          * Apply a 2D filter defined by the user to @image
          */
         void Filter2D(wxCommandEvent& event);
+
+        /*
+         * Apply a threshold to @image
+         */
+        void Threshold(wxCommandEvent& event);
 
         /*
          * Show about information

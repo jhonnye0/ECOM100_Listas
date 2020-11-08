@@ -8,6 +8,7 @@
 #include <wx/sizer.h>
 #include "wxCvResizeDialog.h"
 #include "wxCvFilter2dDialog.h"
+#include "wxCvThresholdDialog.h"
 
 
 namespace wxcv {
@@ -54,6 +55,7 @@ namespace wxcv {
         // View
         // Tools
         tools->Append(ID_FILTER_2D, wxT("&Filtro 2D...\tCtrl+F"));
+        tools->Append(ID_THRESHOLD, wxT("&Limiar...\tCtrl+L"));
         // Help
         help->Append(wxID_ABOUT, "Sobre");
 
@@ -76,6 +78,7 @@ namespace wxcv {
         Bind(wxEVT_MENU, &MainWindow::Exit, this, wxID_EXIT);
         Bind(wxEVT_MENU, &MainWindow::ResizeImage, this, ID_RESIZE_IMAGE);
         Bind(wxEVT_MENU, &MainWindow::Filter2D, this, ID_FILTER_2D);
+        Bind(wxEVT_MENU, &MainWindow::Threshold, this, ID_THRESHOLD);
         Bind(wxEVT_MENU, &MainWindow::About, this, wxID_ABOUT);
     }
 
@@ -144,6 +147,17 @@ namespace wxcv {
         }
 
         filterDialog.Apply(image);
+        imagePanel->UpdateImage(image);
+    }
+
+    void MainWindow::Threshold(wxCommandEvent& event) {
+        wxCvThresholdDialog thresholdDialog(this, image);
+
+        if(thresholdDialog.ShowModal() == wxID_CANCEL){
+            return;
+        }
+
+        thresholdDialog.Apply(image);
         imagePanel->UpdateImage(image);
     }
 
