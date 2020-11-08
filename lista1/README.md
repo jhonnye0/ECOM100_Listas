@@ -38,7 +38,7 @@ Professor: Thales Vieira
 Crie uma imagem I de dimesões 100 x 100 que contém um único valor não nulo localizado no centro da imagem. Utilizando o filtro gaussiano acima, calcule g * I, I * g, g°I e I°g.
 
 10. Implemente uma função que reduza um ou aumente a resolução da imagem por fatores (sx, sy). Aplique em três imagens distintas.
-![Redimensionando imagem](imagens/b64yPN6Ibi.gif)
+<img src="https://github.com/jhonnye0/ECOM100_Listas/blob/main/lista1/imagens/b64yPN6Ibi.gif" width="400px"></img>
 
 11. Escolha uma imagem interessante e gere uma pirâmide aplicando sucessivamente downsampling 3 vezes com fator 1/2. Faça o mesmo com uma pirâmide gaussiana e compare os resultados. Mostre os resultados de cada pirâmide em uma única imagem lado a lado, como nos slides da aula.
 
