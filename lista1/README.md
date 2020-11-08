@@ -39,8 +39,11 @@ Crie uma imagem I de dimesões 100 x 100 que contém um único valor não nulo l
 
 ### 10. Implemente uma função que reduza um ou aumente a resolução da imagem por fatores (sx, sy). Aplique em três imagens distintas.
 Com uma imagem aberta navegue até Editar > Redimensionar. Na caixa de diálogo aberta é possível escolher qual tipo de interpolação será usado, qual a unidade será fornecida (em pixels ou porcentagem). Clique em OK e a imagem será redimensionada para o tamanho desejado. O processo é ilustrado no gif a seguir:
+
 <img src="https://github.com/jhonnye0/ECOM100_Listas/blob/main/lista1/imagens/b64yPN6Ibi.gif" width="400px"></img>
+
 A seguir alguns experimentos utilizando diferentes métodos de interpolação:
+
 # !!! Colocar resultados !!!
 
 ### 11. Escolha uma imagem interessante e gere uma pirâmide aplicando sucessivamente downsampling 3 vezes com fator 1/2. Faça o mesmo com uma pirâmide gaussiana e compare os resultados. Mostre os resultados de cada pirâmide em uma única imagem lado a lado, como nos slides da aula.
