@@ -25,7 +25,7 @@ namespace wxcv {
         std::cout << "Source size:" << src.size() << std::endl;
 
         auto isOutside = [&](const cv::Mat& m, int i, int j) -> bool {
-            i < 0 || i >= src.rows || j < 0 || j >= src.cols;
+            i < 0 || i >= m.rows || j < 0 || j >= m.cols;
         };
 
         for (int i = 0;i < dest.size().height;i++) {
