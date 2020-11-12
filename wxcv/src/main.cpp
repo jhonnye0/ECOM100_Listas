@@ -140,20 +140,27 @@ namespace wxcv {
     }
 
     void MainWindow::Filter2D(wxCommandEvent& event) {
-        wxCvFilter2dDialog filterDialog(this, image);
+        image.convertTo(image, CV_8SC3);
+        try {
+            wxCvFilter2dDialog filterDialog(this, image);
 
-        if(filterDialog.ShowModal() == wxID_CANCEL){
+            if (filterDialog.ShowModal() == wxID_CANCEL) {
+                return;
+            }
+
+            filterDialog.Apply(image);
+            imagePanel->UpdateImage(image);
+        }
+        catch (const std::exception& e) {
+            std::cout << e.what() << std::endl;
             return;
         }
-
-        filterDialog.Apply(image);
-        imagePanel->UpdateImage(image);
     }
 
     void MainWindow::Threshold(wxCommandEvent& event) {
         wxCvThresholdDialog thresholdDialog(this, image);
 
-        if(thresholdDialog.ShowModal() == wxID_CANCEL){
+        if (thresholdDialog.ShowModal() == wxID_CANCEL) {
             return;
         }
 
